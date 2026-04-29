@@ -275,6 +275,48 @@
       }
     }
 
+    .modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  place-items: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  z-index: 50;
+}
+
+.modal.show {
+  display: grid;
+}
+
+.modal-content {
+  width: min(520px, 100%);
+  padding: 28px;
+  border-radius: 28px;
+  background: linear-gradient(145deg, rgba(55, 13, 36, 0.98), rgba(25, 8, 24, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.45);
+  color: var(--text);
+  text-align: left;
+}
+
+.modal-content h2 {
+  margin-bottom: 16px;
+  color: var(--gold);
+  font-size: 1.7rem;
+}
+
+.modal-content p {
+  line-height: 1.7;
+  font-size: 1.05rem;
+  color: #fff3f8;
+}
+
+#closeModal {
+  margin-top: 22px;
+}
+
     .heart {
       position: fixed;
       pointer-events: none;
@@ -320,7 +362,7 @@
         </div>
 
         <div class="buttons">
-          <button id="replay">Volver a leer</button>
+          <button id="replay">Leer más</button>
           <button id="hearts">Un detalle más ✨</button>
         </div>
       </div>
@@ -413,20 +455,41 @@
     </section>
   </main>
 
+  <div class="modal" id="extraModal">
+  <div class="modal-content">
+    <h2>Una cosita más</h2>
+    <p>
+      Quería decirte algo más.<br><br>
+
+      Últimamente me nace decirte más “te quiero”, porque sí lo siento, aunque a veces me salga medio raro o de la nada xD.<br><br>
+
+      También sé que a veces escribo como si estuviera haciendo un interrogatorio, o parezco medio frío, o desaparezco por horas.<br><br>
+
+      No es falta de interés. Solo soy medio torpe para estas cosas, pero estoy intentando expresarlo mejor.<br><br>
+
+      Así que nada… te quiero x2 🫰🏼
+    </p>
+
+    <button id="closeModal">Cerrar</button>
+  </div>
+</div>
+
   <script>
-    const mensaje = `Mi amor:
+    const mensaje = `Holis, gracias por el favor.
 
-Quería hacerte algo distinto, algo sencillo pero hecho con todo mi cariño.
-Esta rosa no se va a marchitar, porque está guardada en esta pequeña página que hice pensando en ti.
+Creo que me resultó más fácil hacer esta rosa que las 32 de papel, así que ahí me avisas si cuenta xD
 
-Gracias por existir, por hacer mis días más bonitos y por ser esa persona que me alegra el corazón.
+Mientras tanto, esta sí es para ti.
 
-Con mucho amor,
-Eduardo`;
+Espero que hoy tengas un día lindo, tranquilo y que esta rosa te saque una sonrisa aunque sea un ratito.
+
+Te quiero.`;
 
     const messageElement = document.getElementById("message");
     const replayButton = document.getElementById("replay");
     const heartsButton = document.getElementById("hearts");
+    const extraModal = document.getElementById("extraModal");
+    const closeModal = document.getElementById("closeModal");
 
     let index = 0;
     let typingTimer;
@@ -469,7 +532,19 @@ Eduardo`;
       setTimeout(() => heart.remove(), 1250);
     }
 
-    replayButton.addEventListener("click", typeMessage);
+    replayButton.addEventListener("click", () => {
+        extraModal.classList.add("show");
+    });
+
+    closeModal.addEventListener("click", () => {
+        extraModal.classList.remove("show");
+    });
+
+    extraModal.addEventListener("click", (event) => {
+        if (event.target === extraModal) {
+            extraModal.classList.remove("show");
+        }
+    });
 
     heartsButton.addEventListener("click", (event) => {
       const rect = event.target.getBoundingClientRect();
