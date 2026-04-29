@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Una rosa para ti</title>
+  <style>
+    :root {
+      --bg-1: #160817;
+      --bg-2: #331023;
+      --pink: #ff4f8b;
+      --rose: #e21d5b;
+      --rose-dark: #8e113a;
+      --rose-light: #ff8ab0;
+      --gold: #ffd7a3;
+      --text: #fff8fb;
+      --soft: rgba(255, 255, 255, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--text);
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255, 79, 139, 0.25), transparent 26%),
+        radial-gradient(circle at 80% 10%, rgba(255, 215, 163, 0.18), transparent 22%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2) 58%, #120713);
+    }
+
+    .scene {
+      position: relative;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+      isolation: isolate;
+    }
+
+    .glow {
+      position: absolute;
+      width: 380px;
+      height: 380px;
+      background: radial-gradient(circle, rgba(255, 79, 139, 0.22), transparent 68%);
+      filter: blur(4px);
+      z-index: -1;
+      animation: breathe 4s ease-in-out infinite;
+    }
+
+    @keyframes breathe {
+      0%, 100% { transform: scale(0.9); opacity: 0.75; }
+      50% { transform: scale(1.12); opacity: 1; }
+    }
+
+    .card {
+      width: min(940px, 100%);
+      min-height: 620px;
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: center;
+      padding: clamp(22px, 5vw, 56px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 34px;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.05));
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(16px);
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border: 1px solid rgba(255, 215, 163, 0.18);
+      border-radius: 26px;
+      pointer-events: none;
+    }
+
+    .text-area {
+      position: relative;
+      z-index: 2;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 14px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255, 79, 139, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: var(--gold);
+      font-size: 0.92rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: clamp(2.2rem, 7vw, 5rem);
+      line-height: 0.95;
+      margin-bottom: 22px;
+      text-wrap: balance;
+      text-shadow: 0 6px 24px rgba(255, 79, 139, 0.22);
+    }
+
+    .message-box {
+      min-height: 170px;
+      padding: 20px;
+      border-radius: 24px;
+      background: rgba(0, 0, 0, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: inset 0 0 30px rgba(255, 79, 139, 0.05);
+    }
+
+    #message {
+      font-size: clamp(1.05rem, 2.3vw, 1.35rem);
+      line-height: 1.75;
+      color: #fff3f8;
+      white-space: pre-wrap;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      height: 1.2em;
+      margin-left: 3px;
+      background: var(--gold);
+      vertical-align: -4px;
+      animation: blink 0.9s infinite;
+    }
+
+    @keyframes blink {
+      0%, 48% { opacity: 1; }
+      49%, 100% { opacity: 0; }
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    button {
+      appearance: none;
+      border: 0;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 13px 18px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: #250612;
+      background: linear-gradient(135deg, var(--gold), #fff2d8);
+      box-shadow: 0 10px 24px rgba(255, 215, 163, 0.22);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(255, 215, 163, 0.3);
+    }
+
+    .rose-area {
+      position: relative;
+      min-height: 520px;
+      display: grid;
+      place-items: center;
+      z-index: 2;
+    }
+
+    .rose-svg {
+      width: min(440px, 100%);
+      height: auto;
+      overflow: visible;
+      filter: drop-shadow(0 30px 35px rgba(0, 0, 0, 0.35));
+      animation: roseFloat 4.5s ease-in-out infinite;
+      transform-origin: 50% 90%;
+    }
+
+    @keyframes roseFloat {
+      0%, 100% { transform: translateY(0) rotate(-1deg); }
+      50% { transform: translateY(-12px) rotate(1.4deg); }
+    }
+
+    .draw-stem {
+      stroke-dasharray: 640;
+      stroke-dashoffset: 640;
+      animation: draw 2s ease forwards;
+    }
+
+    @keyframes draw {
+      to { stroke-dashoffset: 0; }
+    }
+
+    .petal {
+      transform-box: fill-box;
+      transform-origin: center;
+      opacity: 0;
+      animation: bloom 900ms cubic-bezier(.2,.9,.2,1.2) forwards;
+    }
+
+    .petal:nth-of-type(1) { animation-delay: 0.35s; }
+    .petal:nth-of-type(2) { animation-delay: 0.48s; }
+    .petal:nth-of-type(3) { animation-delay: 0.61s; }
+    .petal:nth-of-type(4) { animation-delay: 0.74s; }
+    .petal:nth-of-type(5) { animation-delay: 0.87s; }
+    .petal:nth-of-type(6) { animation-delay: 1s; }
+    .petal:nth-of-type(7) { animation-delay: 1.13s; }
+    .petal:nth-of-type(8) { animation-delay: 1.26s; }
+    .petal:nth-of-type(9) { animation-delay: 1.39s; }
+    .petal:nth-of-type(10) { animation-delay: 1.52s; }
+    .petal:nth-of-type(11) { animation-delay: 1.65s; }
+    .petal:nth-of-type(12) { animation-delay: 1.78s; }
+
+    @keyframes bloom {
+      from { opacity: 0; transform: scale(0.2) rotate(-18deg); }
+      to { opacity: 1; transform: scale(1) rotate(0); }
+    }
+
+    .leaf {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: leafSway 3.4s ease-in-out infinite;
+    }
+
+    @keyframes leafSway {
+      0%, 100% { transform: rotate(-2deg); }
+      50% { transform: rotate(4deg); }
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255, 215, 163, 0.9);
+      box-shadow: 0 0 18px rgba(255, 215, 163, 0.9);
+      animation: twinkle 2.8s ease-in-out infinite;
+    }
+
+    .sparkle:nth-child(1) { top: 12%; left: 18%; animation-delay: 0s; }
+    .sparkle:nth-child(2) { top: 24%; right: 13%; animation-delay: 0.65s; }
+    .sparkle:nth-child(3) { bottom: 18%; left: 12%; animation-delay: 1.2s; }
+    .sparkle:nth-child(4) { bottom: 28%; right: 20%; animation-delay: 1.75s; }
+
+    @keyframes twinkle {
+      0%, 100% { transform: scale(0.6); opacity: 0.35; }
+      50% { transform: scale(1.35); opacity: 1; }
+    }
+
+    .petal-fall {
+      position: fixed;
+      top: -10vh;
+      width: 18px;
+      height: 26px;
+      border-radius: 70% 30% 70% 30%;
+      background: linear-gradient(135deg, #ff8ab0, #d91656 68%, #8e113a);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.85;
+      animation: fall linear forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translate3d(var(--drift), 112vh, 0) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    .heart {
+      position: fixed;
+      pointer-events: none;
+      color: #ff8ab0;
+      font-size: 22px;
+      animation: heartUp 1.2s ease-out forwards;
+      z-index: 10;
+    }
+
+    @keyframes heartUp {
+      from { transform: translateY(0) scale(0.75); opacity: 1; }
+      to { transform: translateY(-95px) scale(1.45); opacity: 0; }
+    }
+
+    @media (max-width: 800px) {
+      .card {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+
+      .rose-area {
+        min-height: 430px;
+        order: -1;
+      }
+
+      .message-box {
+        min-height: 150px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="scene">
+    <div class="glow"></div>
+
+    <section class="card" aria-label="Sorpresa romántica">
+      <div class="text-area">
+        <span class="eyebrow">Un detalle hecho con cariño</span>
+        <h1>Una rosa para ti</h1>
+
+        <div class="message-box">
+          <p id="message"></p><span class="cursor"></span>
+        </div>
+
+        <div class="buttons">
+          <button id="replay">Volver a leer</button>
+          <button id="hearts">Un detalle más ✨</button>
+        </div>
+      </div>
+
+      <div class="rose-area" aria-hidden="true">
+        <span class="sparkle"></span>
+        <span class="sparkle"></span>
+        <span class="sparkle"></span>
+        <span class="sparkle"></span>
+
+        <svg class="rose-svg" viewBox="0 0 420 560" role="img" aria-label="Rosa roja detallada">
+          <defs>
+            <radialGradient id="petalLight" cx="35%" cy="28%" r="70%">
+              <stop offset="0" stop-color="#ffb4ca" />
+              <stop offset="0.38" stop-color="#ff4f8b" />
+              <stop offset="0.76" stop-color="#c9144e" />
+              <stop offset="1" stop-color="#720827" />
+            </radialGradient>
+
+            <linearGradient id="petalDark" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stop-color="#ff719f" />
+              <stop offset="0.55" stop-color="#c90f48" />
+              <stop offset="1" stop-color="#5b061f" />
+            </linearGradient>
+
+            <linearGradient id="leafGrad" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stop-color="#9bffb7" />
+              <stop offset="0.45" stop-color="#2fb66a" />
+              <stop offset="1" stop-color="#0a512e" />
+            </linearGradient>
+
+            <linearGradient id="stemGrad" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0" stop-color="#0b3f26" />
+              <stop offset="0.5" stop-color="#42c774" />
+              <stop offset="1" stop-color="#082719" />
+            </linearGradient>
+
+            <filter id="softShadow" x="-40%" y="-40%" width="180%" height="180%">
+              <feDropShadow dx="0" dy="10" stdDeviation="9" flood-color="#24000d" flood-opacity="0.45" />
+            </filter>
+
+            <filter id="innerPetal" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="4" stdDeviation="3" flood-color="#4b0017" flood-opacity="0.45" />
+            </filter>
+          </defs>
+
+          <path class="draw-stem" d="M215 252 C198 322, 243 381, 212 520" fill="none" stroke="url(#stemGrad)" stroke-width="17" stroke-linecap="round" />
+          <path d="M222 265 C210 333, 241 396, 216 522" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="3" stroke-linecap="round" />
+
+          <path class="leaf" d="M205 356 C135 312, 98 334, 76 384 C130 393, 174 384, 205 356Z" fill="url(#leafGrad)" stroke="#0d5a32" stroke-width="3" />
+          <path d="M84 381 C132 367, 168 361, 201 355" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="2" stroke-linecap="round" />
+          <path d="M128 371 C119 358, 110 350, 100 344" fill="none" stroke="rgba(8,54,30,.45)" stroke-width="2" stroke-linecap="round" />
+          <path d="M154 365 C145 350, 137 342, 127 336" fill="none" stroke="rgba(8,54,30,.45)" stroke-width="2" stroke-linecap="round" />
+
+          <path class="leaf" d="M224 413 C294 368, 338 388, 360 444 C300 451, 256 441, 224 413Z" fill="url(#leafGrad)" stroke="#0d5a32" stroke-width="3" />
+          <path d="M356 440 C312 423, 269 419, 228 413" fill="none" stroke="rgba(255,255,255,.34)" stroke-width="2" stroke-linecap="round" />
+          <path d="M305 429 C315 414, 326 405, 340 399" fill="none" stroke="rgba(8,54,30,.45)" stroke-width="2" stroke-linecap="round" />
+          <path d="M275 421 C286 405, 296 397, 309 391" fill="none" stroke="rgba(8,54,30,.45)" stroke-width="2" stroke-linecap="round" />
+
+          <path d="M190 310 l-30 16 l27 7" fill="#2fae60" stroke="#0d5a32" stroke-width="2" />
+          <path d="M232 330 l32 12 l-23 12" fill="#2fae60" stroke="#0d5a32" stroke-width="2" />
+          <path d="M204 438 l-26 16 l24 7" fill="#2fae60" stroke="#0d5a32" stroke-width="2" />
+
+          <g filter="url(#softShadow)">
+            <path class="petal" d="M206 86 C150 34, 85 69, 96 135 C115 223, 205 219, 215 152 C222 118, 220 99, 206 86Z" fill="url(#petalDark)" />
+            <path class="petal" d="M219 86 C259 29, 336 50, 343 117 C350 195, 266 221, 225 157 C209 131, 204 105, 219 86Z" fill="url(#petalLight)" />
+            <path class="petal" d="M184 120 C119 100, 61 143, 80 207 C104 284, 194 260, 210 188 C216 157, 207 134, 184 120Z" fill="url(#petalLight)" />
+            <path class="petal" d="M246 118 C310 90, 370 133, 354 201 C335 283, 240 264, 218 190 C209 158, 220 132, 246 118Z" fill="url(#petalDark)" />
+            <path class="petal" d="M165 174 C101 180, 73 244, 118 291 C177 352, 230 285, 211 221 C202 190, 187 175, 165 174Z" fill="url(#petalDark)" />
+            <path class="petal" d="M266 170 C333 169, 368 230, 330 282 C281 350, 219 292, 223 226 C225 195, 240 176, 266 170Z" fill="url(#petalLight)" />
+            <path class="petal" d="M149 137 C98 119, 53 152, 57 207 C88 179, 122 170, 165 176 C174 160, 170 147, 149 137Z" fill="#b70f42" opacity="0.88" />
+            <path class="petal" d="M280 137 C329 111, 379 139, 384 194 C351 174, 314 169, 267 175 C259 158, 261 147, 280 137Z" fill="#f04d84" opacity="0.9" />
+            <path class="petal" d="M206 127 C166 142, 143 185, 165 225 C190 271, 248 258, 258 208 C266 168, 244 132, 206 127Z" fill="url(#petalLight)" filter="url(#innerPetal)" />
+            <path class="petal" d="M213 142 C243 121, 284 142, 286 181 C289 231, 231 250, 205 210 C188 184, 191 157, 213 142Z" fill="url(#petalDark)" filter="url(#innerPetal)" />
+            <path class="petal" d="M206 151 C176 154, 157 185, 171 214 C191 253, 237 234, 234 195 C232 168, 224 153, 206 151Z" fill="#ff6b9c" filter="url(#innerPetal)" />
+            <path class="petal" d="M217 160 C237 159, 251 177, 248 200 C244 229, 207 236, 195 211 C184 189, 195 165, 217 160Z" fill="#8f0c34" filter="url(#innerPetal)" />
+          </g>
+
+          <path d="M159 122 C141 152, 135 188, 153 218" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="3" stroke-linecap="round" />
+          <path d="M289 124 C309 153, 310 190, 292 219" fill="none" stroke="rgba(255,255,255,.23)" stroke-width="3" stroke-linecap="round" />
+          <path d="M189 164 C174 185, 177 211, 198 228" fill="none" stroke="rgba(255,255,255,.26)" stroke-width="2.5" stroke-linecap="round" />
+          <path d="M236 161 C254 184, 250 212, 229 228" fill="none" stroke="rgba(255,255,255,.21)" stroke-width="2.5" stroke-linecap="round" />
+
+          <circle cx="169" cy="126" r="5" fill="rgba(255,255,255,.78)" />
+          <path d="M166 125 C169 117, 177 117, 181 124 C176 130, 171 131, 166 125Z" fill="rgba(255,255,255,.6)" />
+          <circle cx="284" cy="154" r="4" fill="rgba(255,255,255,.58)" />
+          <path d="M281 154 C283 148, 290 148, 293 153 C290 158, 285 160, 281 154Z" fill="rgba(255,255,255,.48)" />
+        </svg>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const mensaje = `Mi amor:
+
+Quería hacerte algo distinto, algo sencillo pero hecho con todo mi cariño.
+Esta rosa no se va a marchitar, porque está guardada en esta pequeña página que hice pensando en ti.
+
+Gracias por existir, por hacer mis días más bonitos y por ser esa persona que me alegra el corazón.
+
+Con mucho amor,
+Eduardo`;
+
+    const messageElement = document.getElementById("message");
+    const replayButton = document.getElementById("replay");
+    const heartsButton = document.getElementById("hearts");
+
+    let index = 0;
+    let typingTimer;
+
+    function typeMessage() {
+      clearTimeout(typingTimer);
+      messageElement.textContent = "";
+      index = 0;
+
+      function writeLetter() {
+        if (index < mensaje.length) {
+          messageElement.textContent += mensaje.charAt(index);
+          index += 1;
+          typingTimer = setTimeout(writeLetter, 32);
+        }
+      }
+
+      writeLetter();
+    }
+
+    function createFallingPetal() {
+      const petal = document.createElement("span");
+      petal.className = "petal-fall";
+      petal.style.left = Math.random() * 100 + "vw";
+      petal.style.setProperty("--drift", (Math.random() * 220 - 110) + "px");
+      petal.style.animationDuration = (6 + Math.random() * 5) + "s";
+      petal.style.transform = `rotate(${Math.random() * 360}deg)`;
+      document.body.appendChild(petal);
+
+      setTimeout(() => petal.remove(), 12000);
+    }
+
+    function createHeart(x, y) {
+      const heart = document.createElement("span");
+      heart.className = "heart";
+      heart.textContent = Math.random() > 0.5 ? "❤" : "✨";
+      heart.style.left = x + "px";
+      heart.style.top = y + "px";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 1250);
+    }
+
+    replayButton.addEventListener("click", typeMessage);
+
+    heartsButton.addEventListener("click", (event) => {
+      const rect = event.target.getBoundingClientRect();
+      for (let i = 0; i < 14; i++) {
+        setTimeout(() => {
+          const x = rect.left + rect.width / 2 + Math.random() * 120 - 60;
+          const y = rect.top + rect.height / 2 + Math.random() * 70 - 35;
+          createHeart(x, y);
+        }, i * 55);
+      }
+    });
+
+    window.addEventListener("click", (event) => {
+      if (event.target.tagName !== "BUTTON") {
+        createHeart(event.clientX, event.clientY);
+      }
+    });
+
+    typeMessage();
+    setInterval(createFallingPetal, 550);
+  </script>
+</body>
+</html>
